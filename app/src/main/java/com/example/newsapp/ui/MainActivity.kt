@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() , OnDataFetchedListener {
     }
 
     private fun setUpRecyclerview() {
-        val adapter = NewsAdapter(data)
+        val adapter = NewsAdapter(this, data , supportFragmentManager)
         binding.newsRecyclerview.adapter = adapter
         binding.newsRecyclerview.layoutManager = LinearLayoutManager(this)
     }

@@ -1,14 +1,18 @@
 package com.example.newsapp.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsapp.databinding.NewsItrmLayoutBinding
 import com.example.newsapp.remote.model.ResponseModel
+import com.example.newsapp.ui.DetailsFragment
 
-class NewsAdapter(private val dataList: List<ResponseModel.Article>) :
+class NewsAdapter(private var context: Context, private val dataList: List<ResponseModel.Article> , private var fragmentMange : FragmentManager) :
     RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
+    private lateinit var detailsFragment: DetailsFragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,13 +34,19 @@ class NewsAdapter(private val dataList: List<ResponseModel.Article>) :
 
         fun bind(data: ResponseModel.Article) {
             binding.tvCardDesc.text = data.description
-          //  binding.tvCardSource.text = data.source.toString()
+            //  binding.tvCardSource.text = data.source.toString()
             binding.tvCardDate.text = data.publishedAt
 
             // Load image using Glide (you may need to adjust the URL or method based on your actual image loading mechanism)
             Glide.with(binding.root)
                 .load(data.urlToImage)
                 .into(binding.iCard)
+
+            binding.cardlayout.setOnClickListener {
+                detailsFragment = DetailsFragment(context, data)
+                detailsFragment.show(fragmentMange , "adapter")
+            }
+
         }
     }
 }
